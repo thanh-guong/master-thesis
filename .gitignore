@@ -1,3 +1,14 @@
+# Dataset (too heavy to be uploaded)
+
+data/
+
+# Results
+
+convmodrecnets_CNN2_0.5.wts.h5
+results_cnn2_d0.5.dat
+
+### AUTO-GENERATED USING GITHUB (python pattern used) ###
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
