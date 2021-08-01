@@ -4,8 +4,8 @@ data/
 
 # Results
 
-convmodrecnets_CNN2_0.5.wts.h5
-results_cnn2_d0.5.dat
+convmodrecnets_*
+results_*
 
 ### AUTO-GENERATED USING GITHUB (python pattern used) ###
 
