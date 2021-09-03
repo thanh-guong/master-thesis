@@ -148,3 +148,5 @@ Custom NN/results_deepsigv2.dat
 Custom NN/results_iq_d0.5.dat
 
 *.h5
+
+*.dat
