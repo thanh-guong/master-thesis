@@ -4,8 +4,8 @@ data/
 
 # Results
 
-convmodrecnets_CNN2_0.5.wts.h5
-results_cnn2_d0.5.dat
+*.h5
+*.dat
 
 ### AUTO-GENERATED USING GITHUB (python pattern used) ###
 
@@ -138,15 +138,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-Custom NN/convmodrecnets_deepsigv2.wts.h5
-
-Custom NN/convmodrecnets_iq_0.5.wts.h5
-
-Custom NN/results_deepsigv2.dat
-
-Custom NN/results_iq_d0.5.dat
-
-*.h5
-
-*.dat
