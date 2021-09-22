@@ -1,5 +1,4 @@
 import cmath
-
 import datasetlib
 
 MODULE_PHASE_SIGNALS_COLUMN_DATAFRAME_NAME = 'MP signals'
