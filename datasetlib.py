@@ -64,6 +64,10 @@ def load_dataset_dataframe(dataset_filename, dataset=None):
     return dataset_dataframe
 
 
+def filter_dataset_for_high_snr_only(dataset_df, snr_lower_bound):
+    return dataset_df[dataset_df[SNR_COLUMN_DATAFRAME_NAME] >= snr_lower_bound]
+
+
 def signals(dataset_dataframe):
     """
         All the elements of I/Q signal column in dataset, as a List.

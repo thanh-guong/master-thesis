@@ -2,3 +2,4 @@ matplotlib==3.4.2
 keras==2.4.3
 tensorflow-gpu==2.5.0
 seaborn==0.11.1
+papermill
