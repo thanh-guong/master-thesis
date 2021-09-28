@@ -122,7 +122,8 @@ def add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_de
     return np.concatenate((signals, gnoised_signals)), np.concatenate((labels, gnoised_labels))
 
 
-def rotate_flip_and_add_gaussian_noise(signals, labels, standard_deviation=0, theta=0, increment_percentage=1):
+def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_deviation=0, theta=0,
+                                                                increment_percentage=1):
     increment_percentage = 0.25 * increment_percentage
 
     rotated_signals, rotated_new_labels = rotate(signals, labels, theta, increment_percentage)
