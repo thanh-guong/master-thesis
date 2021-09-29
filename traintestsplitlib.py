@@ -1,5 +1,10 @@
 import numpy as np
 
+import datasetlib
+
+# seeding the random numpy object (Interstella 5555 - Daft Punk)
+np.random.seed(5555)
+
 
 def train_test_random_indexes(n_elements, training_set_percentage):
     """
@@ -13,9 +18,6 @@ def train_test_random_indexes(n_elements, training_set_percentage):
                         dataset, respecting the specified training set dimension.
     """
 
-    # seeding the random numpy object (Interstella 5555 - Daft Punk)
-    np.random.seed(5555)
-
     # take a portion of the dataset as training set
     n_train = int(n_elements * training_set_percentage)
 
@@ -26,6 +28,28 @@ def train_test_random_indexes(n_elements, training_set_percentage):
     # obtain the remaining datapoints indexes
     # test_index = [I_1, I_2, ..., I_HALF_N_EXAMPLES]
     test_index = list(set(range(0, n_elements)) - set(train_index))
+
+    return train_index, test_index
+
+
+def train_test_random_indexes_high_snr(dataset_df, training_set_percentage, snr_lower_bound):
+
+    high_snr_dataset_df = datasetlib.filter_dataset_for_high_snr_only(dataset_df, snr_lower_bound)
+    high_snr_signals = datasetlib.signals(high_snr_dataset_df)
+    total_high_snr_datapoints = len(high_snr_signals)
+
+    total_train_index = high_snr_dataset_df.index.values.tolist()
+
+    # take a portion of the dataset as training set
+    n_train = int(total_high_snr_datapoints * training_set_percentage)
+
+    # extract datapoints indexes randomly
+    # train_index = [I_1, I_2, ..., I_N_TRAIN]
+    train_index = np.random.choice(total_train_index, size=n_train, replace=False)
+
+    # obtain the remaining datapoints indexes
+    # test_index = [I_1, I_2, ..., I_HALF_N_EXAMPLES]
+    test_index = list(set(range(0, len(dataset_df))) - set(train_index))
 
     return train_index, test_index
 
