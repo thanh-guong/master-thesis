@@ -122,8 +122,7 @@ def add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_de
     return np.concatenate((signals, gnoised_signals)), np.concatenate((labels, gnoised_labels))
 
 
-def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_deviation=0, theta=0,
-                                                                increment_percentage=1):
+def rotate_flip_add_gaussian_noise(signals, labels, standard_deviation=0, theta=0, increment_percentage=1):
     increment_percentage = 0.25 * increment_percentage
 
     rotated_signals, rotated_new_labels = rotate(signals, labels, theta, increment_percentage)
@@ -131,13 +130,19 @@ def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels,
     vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels, increment_percentage)
     gnoised_signals, gnoised_new_labels = add_gaussian_noise(signals, labels, standard_deviation, increment_percentage)
 
-    signals_result, labels_result = np.concatenate((signals, rotated_signals)), np.concatenate(
-        (labels, rotated_new_labels))
-    signals_result, labels_result = np.concatenate((signals_result, hflipped_signals)), np.concatenate(
-        (labels_result, hflipped_new_labels))
+    signals_result, labels_result = np.concatenate((rotated_signals, hflipped_signals)), np.concatenate(
+        (rotated_new_labels, hflipped_new_labels))
     signals_result, labels_result = np.concatenate((signals_result, vflipped_signals)), np.concatenate(
         (labels_result, vflipped_new_labels))
     signals_result, labels_result = np.concatenate((signals_result, gnoised_signals)), np.concatenate(
         (labels_result, gnoised_new_labels))
 
     return signals_result, labels_result
+
+
+def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_deviation=0, theta=0,
+                                                                increment_percentage=1):
+    signals_result, labels_result = rotate_flip_add_gaussian_noise(signals, labels, standard_deviation, theta,
+                                                                   increment_percentage)
+
+    return np.concatenate((signals, signals_result)), np.concatenate((labels, labels_result))

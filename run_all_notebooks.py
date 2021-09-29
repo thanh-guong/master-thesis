@@ -9,7 +9,7 @@ directories_where_execute = sys.argv[1:]
 # if no argument was passed, default to all
 if not directories_where_execute:
     print("INFO: No directory to execute specified, using all directories by default.")
-    directories_where_execute = ['DFT', 'DFT + IQ',  'IQ', 'MP', 'MP + IQ']
+    directories_where_execute = ['DFT', 'DFT + IQ',  'IQ', 'MP', 'MP + IQ', 'IQ - Data Augmentation']
 
 for directory in directories_where_execute:
 
