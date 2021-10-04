@@ -1,7 +1,7 @@
 import keras
 
 
-def train(filepath, model, x_train, y_train, x_test, y_test, batch_size, epochs, early_stopping_patience=5):
+def train(filepath, model, x_train, y_train, x_test, y_test, batch_size, epochs, early_stopping_patience=5, validation_split=0.1):
     # perform training ...
     #   - call the main training loop in keras for our network+dataset
 
@@ -10,7 +10,7 @@ def train(filepath, model, x_train, y_train, x_test, y_test, batch_size, epochs,
         y_train,
         batch_size=batch_size,
         epochs=epochs,
-        validation_data=(x_test, y_test),
+        validation_split=validation_split,
         callbacks=[
             keras.callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=0, save_best_only=True, mode='auto'),
             keras.callbacks.EarlyStopping(monitor='val_loss', patience=early_stopping_patience, verbose=0, mode='auto')

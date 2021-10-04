@@ -42,5 +42,20 @@ def transform_and_add_I_Q_to_DFT(dataset_df):
     return dataset_df
 
 
+def all_I_Q_to_DFT_merging(signals):
+    result = []
+    DFT_signals = all_I_Q_to_DFT(signals)
+
+    for i in range(0, len(signals)):
+        I = signals[i][0]
+        Q = signals[i][1]
+        DFT_1 = DFT_signals[i][0]
+        DFT_2 = DFT_signals[i][1]
+
+        result.append([I, Q, DFT_1, DFT_2])
+
+    return result
+
+
 def signals(dataset_df):
     return dataset_df[DFT_SIGNALS_COLUMN_DATAFRAME_NAME].tolist()

@@ -216,3 +216,24 @@ def custom_deepsig_v2(input_shape, classes=11):
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     return model
+
+
+def new(input_shape, classes=11, activation_function="relu"):
+    inp = keras.Input(shape=input_shape)
+    reshape = Reshape(input_shape + [1])(inp)
+
+    conv_1 = Convolution2D(32, kernel_size=(2, 3), padding='same', activation=activation_function)(reshape)
+    conv_2 = Convolution2D(64, kernel_size=(2, 3), padding='same', activation=activation_function)(conv_1)
+    max_pool = MaxPooling2D(pool_size=(2, 2))(conv_2)
+    dr1 = Dropout(0.25)(max_pool)
+
+    flatten = Flatten()(dr1)
+
+    fc1 = Dense(128, activation=activation_function)(flatten)
+    dr2 = Dropout(0.5)(fc1)
+    output = Dense(classes, activation="softmax")(dr2)
+
+    model = keras.Model(inputs=[inp], outputs=[output])
+    model.compile(loss='categorical_crossentropy', optimizer='adam')
+
+    return model
