@@ -21,7 +21,7 @@ def show_loss_curves(history):
     plt.legend()
 
 
-def confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues, labels=[]):
+def confusion_matrix(cm, title='', cmap=plt.cm.Blues, labels=[]):
     """
         Plot confusion matrix using matplotlib.
 
@@ -43,7 +43,7 @@ def confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues, labels=[])
     plt.xlabel('Predicted label')
 
 
-def plot_confusion_matrix(model, x_test, y_test, batch_size, classes):
+def plot_confusion_matrix(model, title, x_test, y_test, batch_size, classes):
     """
         Makes a prediction, then builds the confusion matrix and plots it.
 
@@ -69,10 +69,10 @@ def plot_confusion_matrix(model, x_test, y_test, batch_size, classes):
     for i in range(0, len(classes)):
         confnorm[i, :] = confusion_m[i, :] / np.sum(confusion_m[i, :])
 
-    confusion_matrix(confnorm, labels=classes)
+    confusion_matrix(confnorm, title, labels=classes)
 
 
-def plot_confusion_matrix_each_snr(model, snrs, dataset_df, X_test, Y_test, test_index, classes):
+def plot_confusion_matrix_each_snr(model, neural_network_name, snrs, dataset_df, X_test, Y_test, test_index, classes):
     # Plot confusion matrix
     acc = {}
     for snr in snrs:
@@ -101,7 +101,7 @@ def plot_confusion_matrix_each_snr(model, snrs, dataset_df, X_test, Y_test, test
             confnorm[i, :] = conf[i, :] / np.sum(conf[i, :])
 
         plt.figure()
-        confusion_matrix(confnorm, labels=classes, title="ConvNet Confusion Matrix (SNR=%d)" % (snr))
+        confusion_matrix(confnorm, labels=classes, title=neural_network_name + " (SNR=%d)" % (snr))
 
         cor = np.sum(np.diag(conf))
         ncor = np.sum(conf) - cor
