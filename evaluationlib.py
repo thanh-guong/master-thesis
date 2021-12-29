@@ -72,6 +72,34 @@ def plot_confusion_matrix(model, title, x_test, y_test, batch_size, classes):
     confusion_matrix(confnorm, title, labels=classes)
 
 
+def plot_double_input_confusion_matrix(model, title, iq_test, transformed_test, y_test, batch_size, classes):
+    """
+        Makes a prediction, then builds the confusion matrix and plots it.
+
+        Parameters:
+            model (Model): keras.Model used for prediction.
+            y_test (List): training set labels.
+            batch_size (int): batch dimension.
+            classes (List): labels for axis.
+    """
+
+    # Plot confusion matrix
+    test_y_hat = model.predict((iq_test, transformed_test), batch_size=batch_size)
+
+    confusion_m = np.zeros([len(classes), len(classes)])
+    confnorm = np.zeros([len(classes), len(classes)])
+
+    for i in range(0, iq_test.shape[0]):
+        j = list(y_test[i, :]).index(1)
+        k = int(np.argmax(test_y_hat[i, :]))
+        confusion_m[j, k] = confusion_m[j, k] + 1
+
+    for i in range(0, len(classes)):
+        confnorm[i, :] = confusion_m[i, :] / np.sum(confusion_m[i, :])
+
+    confusion_matrix(confnorm, title, labels=classes)
+
+
 def plot_confusion_matrix_each_snr(model, neural_network_name, snrs, dataset_df, X_test, Y_test, test_index, classes):
     # Plot confusion matrix
     acc = {}
@@ -93,6 +121,45 @@ def plot_confusion_matrix_each_snr(model, neural_network_name, snrs, dataset_df,
         confnorm = np.zeros([len(classes), len(classes)])
 
         for i in range(0, test_X_i.shape[0]):
+            j = list(test_Y_i[i, :]).index(1)
+            k = int(np.argmax(test_Y_i_hat[i, :]))
+            conf[j, k] = conf[j, k] + 1
+
+        for i in range(0, len(classes)):
+            confnorm[i, :] = conf[i, :] / np.sum(conf[i, :])
+
+        plt.figure()
+        confusion_matrix(confnorm, labels=classes, title=neural_network_name + " (SNR=%d)" % (snr))
+
+        cor = np.sum(np.diag(conf))
+        ncor = np.sum(conf) - cor
+        print("Overall Accuracy: ", cor / (cor + ncor))
+        acc[snr] = 1.0 * cor / (cor + ncor)
+
+    return acc
+
+
+def plot_double_input_confusion_matrix_each_snr(model, neural_network_name, snrs, dataset_df, iq_test, transformed_test, Y_test, test_index, classes):
+    # Plot confusion matrix
+    acc = {}
+    for snr in snrs:
+
+        # extract classes @ SNR
+        all_snrs = datasetlib.snrs(dataset_df)
+        all_snrs = np.array(all_snrs)
+
+        test_SNRs = list(all_snrs[test_index])
+        this_snr_indexes = np.where(np.array(test_SNRs) == snr)
+
+        test_X_i = (iq_test[this_snr_indexes], transformed_test[this_snr_indexes])
+        test_Y_i = Y_test[this_snr_indexes]
+
+        # estimate classes
+        test_Y_i_hat = model.predict(test_X_i)
+        conf = np.zeros([len(classes), len(classes)])
+        confnorm = np.zeros([len(classes), len(classes)])
+
+        for i in range(0, len(test_X_i[0])):
             j = list(test_Y_i[i, :]).index(1)
             k = int(np.argmax(test_Y_i_hat[i, :]))
             conf[j, k] = conf[j, k] + 1

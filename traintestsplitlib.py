@@ -132,3 +132,26 @@ def split_x_y_train_test(signals, labels, mods, train_index, test_index):
     y_train, y_test = split_y_train_test(labels, mods, train_index, test_index)
 
     return x_train, x_test, y_train, y_test
+
+
+def split_double_x_y_train_test(signals, transformed_signals, labels, mods, train_index, test_index):
+    """
+            Uses train_index and test_index to extract datapoints from the I/Q signal column, and build the Training Set
+            and Test Set.
+            Labels are one-hot encoded.
+
+                    Parameters:
+                            signals (List): datapoints from the signals column in dataset.
+                            mods (List): list of unique labels.
+                            labels (List): labels from the label column in dataset.
+                            train_index (List): index for Training Set.
+                            test_index (List): index for Test Set.
+                    Returns:
+                            x_train, x_test (List, List): These two lists contain Training Set and Test Set.
+    """
+
+    iq_train, iq_test = split_x_train_test(signals, train_index, test_index)
+    transformed_train, transformed_test = split_x_train_test(transformed_signals, train_index, test_index)
+    y_train, y_test = split_y_train_test(labels, mods, train_index, test_index)
+
+    return iq_train, transformed_train, iq_test, transformed_test, y_train, y_test
