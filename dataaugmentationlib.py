@@ -102,6 +102,14 @@ def vertical_flip_and_concatenate_with_signals(signals, labels, increment_percen
     return np.concatenate((signals, vflipped_signals)), np.concatenate((labels, vflipped_labels))
 
 
+def horizontal_and_vertical_flip_and_concatenate_with_signals(signals, labels, increment_percentage=1):
+    hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels, increment_percentage/2)
+    vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels, increment_percentage/2)
+
+    return np.concatenate((signals, hflipped_signals, vflipped_signals)),\
+           np.concatenate((labels, hflipped_new_labels, vflipped_new_labels))
+
+
 def add_gaussian_noise(signals, labels, standard_deviation=0, increment_percentage=1):
     disturbed_with_noise_signals = []
 
