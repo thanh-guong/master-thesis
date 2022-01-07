@@ -1,17 +1,17 @@
+import math
+
 import numpy as np
 
+THETA_1 = math.pi/2
+THETA_2 = math.pi
+THETA_3 = (3*math.pi)/2
 
-def randomize_elements_to_transform(signals, labels, increment_percentage=1):
-    signals_length = len(signals)
-    number_of_signals_to_transform = int(signals_length * increment_percentage)
-
-    signals_to_transform_index = np.random.choice(range(0, signals_length), size=number_of_signals_to_transform,
-                                                  replace=True)
-
-    return signals[signals_to_transform_index], labels[signals_to_transform_index]
+SIGMA_1 = 0.0005
+SIGMA_2 = 0.001
+SIGMA_3 = 0.002
 
 
-def rotate(signals, labels, theta=0, increment_percentage=1):
+def rotate(signals, labels):
     """
 
         Function for rotating a portion (proportional to scale_factor) of signals and adding the rotated signals to original
@@ -24,8 +24,6 @@ def rotate(signals, labels, theta=0, increment_percentage=1):
         Args:
             signals: numpy.array of 2x128 matrix of I/Q signals.
             labels: labels for each signal.
-            theta: angle of rotation in radian (using pi notation).
-            increment_percentage: how many signals to rotate and add to original signals.
 
         Returns:
             numpy.array of 2x128 matrix of I/Q signals concatenated with a portion (proportional to scale_factor) of signals
@@ -38,36 +36,53 @@ def rotate(signals, labels, theta=0, increment_percentage=1):
     # | cos(theta)  -sin(theta) |
     # | sin(theta)   cos(theta) |
 
-    T = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+    def T(theta):
+        return np.array([
+            [np.cos(theta), -np.sin(theta)],
+            [np.sin(theta), np.cos(theta)]
+        ])
+
+    T_1 = T(THETA_1)
+    T_2 = T(THETA_2)
+    T_3 = T(THETA_3)
 
     # list containing rotated signals
-    B_list = []
+    rotated_signals = []
+    rotated_labels = []
 
-    A_list, new_labels = randomize_elements_to_transform(signals, labels, increment_percentage)
+    # for each signal B = TxA
+    for i in range(0, len(signals)):
+        A = signals[i]
+        l = labels[i]
 
-    # for each signal, represented by A matrix
-    for A in A_list:
-        # B = TxA
-        B = np.matmul(T, A)
-        B_list.append(B)
+        # rotate by THETA_1
+        B = np.matmul(T_1, A)
+        rotated_signals.append(B)
+        rotated_labels.append(l)
 
-    B_list = np.array(B_list)
+        # rotate by THETA_2
+        B = np.matmul(T_2, A)
+        rotated_signals.append(B)
+        rotated_labels.append(l)
 
-    return B_list, new_labels
+        # rotate by THETA_3
+        B = np.matmul(T_3, A)
+        rotated_signals.append(B)
+        rotated_labels.append(l)
+
+    return rotated_signals, rotated_labels
 
 
-def rotate_and_concatenate_with_signals(signals, labels, theta=0, increment_percentage=1):
-    rotated_signals, rotated_labels = rotate(signals, labels, theta, increment_percentage)
+def rotate_and_concatenate_with_signals(signals, labels):
+    rotated_signals, rotated_labels = rotate(signals, labels)
 
     return np.concatenate((signals, rotated_signals)), np.concatenate((labels, rotated_labels))
 
 
-def flip(signals, labels, direction, increment_percentage=1):
+def flip(signals, labels, direction):
     flipped = []
 
-    signals_to_flip, new_labels = randomize_elements_to_transform(signals, labels, increment_percentage)
-
-    for signal in signals_to_flip:
+    for signal in signals:
         I = signal[0]
         Q = signal[1]
 
@@ -79,64 +94,76 @@ def flip(signals, labels, direction, increment_percentage=1):
 
     flipped = np.array(flipped)
 
-    return flipped, new_labels
+    return flipped, labels
 
 
-def horizontal_flip(signals, labels, increment_percentage=1):
-    return flip(signals, labels, "horizontal", increment_percentage)
+def horizontal_flip(signals, labels):
+    return flip(signals, labels, "horizontal")
 
 
-def horizontal_flip_and_concatenate_with_signals(signals, labels, increment_percentage=1):
-    hflipped_signals, hflipped_labels = horizontal_flip(signals, labels, increment_percentage)
+def horizontal_flip_and_concatenate_with_signals(signals, labels):
+    hflipped_signals, hflipped_labels = horizontal_flip(signals, labels)
 
     return np.concatenate((signals, hflipped_signals)), np.concatenate((labels, hflipped_labels))
 
 
-def vertical_flip(signals, labels, increment_percentage=1):
-    return flip(signals, labels, "vertical", increment_percentage)
+def vertical_flip(signals, labels):
+    return flip(signals, labels, "vertical")
 
 
-def vertical_flip_and_concatenate_with_signals(signals, labels, increment_percentage=1):
-    vflipped_signals, vflipped_labels = vertical_flip(signals, labels, increment_percentage)
+def vertical_flip_and_concatenate_with_signals(signals, labels):
+    vflipped_signals, vflipped_labels = vertical_flip(signals, labels)
 
     return np.concatenate((signals, vflipped_signals)), np.concatenate((labels, vflipped_labels))
 
 
-def horizontal_and_vertical_flip_and_concatenate_with_signals(signals, labels, increment_percentage=1):
-    hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels, increment_percentage/2)
-    vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels, increment_percentage/2)
+def horizontal_and_vertical_flip_and_concatenate_with_signals(signals, labels):
+    hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels)
+    vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels)
 
     return np.concatenate((signals, hflipped_signals, vflipped_signals)),\
            np.concatenate((labels, hflipped_new_labels, vflipped_new_labels))
 
 
-def add_gaussian_noise(signals, labels, standard_deviation=0, increment_percentage=1):
+def add_gaussian_noise(signals, labels):
     disturbed_with_noise_signals = []
+    disturbed_labels = []
 
-    signals_to_disturb_with_noise, new_labels = randomize_elements_to_transform(signals, labels, increment_percentage)
+    for i in range(0, len(signals)):
+        signal = signals[i]
+        label = labels[i]
 
-    for signal in signals_to_disturb_with_noise:
-        noise = np.random.normal(0, standard_deviation, (signal.shape[1:]))
+        # noise with SIGMA_1
+        noise = np.random.normal(0, SIGMA_1, (signal.shape[1:]))
         disturbed_with_noise_signals.append(signal + noise)
+        disturbed_labels.append(label)
+
+        # noise with SIGMA_2
+        noise = np.random.normal(0, SIGMA_2, (signal.shape[1:]))
+        disturbed_with_noise_signals.append(signal + noise)
+        disturbed_labels.append(label)
+
+        # noise with SIGMA_3
+        noise = np.random.normal(0, SIGMA_3, (signal.shape[1:]))
+        disturbed_with_noise_signals.append(signal + noise)
+        disturbed_labels.append(label)
 
     disturbed_with_noise_signals = np.array(disturbed_with_noise_signals)
 
-    return disturbed_with_noise_signals, new_labels
+    return disturbed_with_noise_signals, disturbed_labels
 
 
-def add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_deviation=0, increment_percentage=1):
-    gnoised_signals, gnoised_labels = add_gaussian_noise(signals, labels, standard_deviation, increment_percentage)
+def add_gaussian_noise_and_concatenate_with_signals(signals, labels):
+    gnoised_signals, gnoised_labels = add_gaussian_noise(signals, labels)
 
     return np.concatenate((signals, gnoised_signals)), np.concatenate((labels, gnoised_labels))
 
 
-def rotate_flip_add_gaussian_noise(signals, labels, standard_deviation=0, theta=0, increment_percentage=1):
-    increment_percentage = 0.25 * increment_percentage
-
-    rotated_signals, rotated_new_labels = rotate(signals, labels, theta, increment_percentage)
-    hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels, increment_percentage)
-    vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels, increment_percentage)
-    gnoised_signals, gnoised_new_labels = add_gaussian_noise(signals, labels, standard_deviation, increment_percentage)
+def rotate_flip_add_gaussian_noise(signals, labels):
+    rotated_signals, rotated_new_labels = rotate(signals, labels)
+    hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels)
+    vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels)
+    gnoised_signals, gnoised_new_labels = add_gaussian_noise(signals, labels)
 
     signals_result, labels_result = np.concatenate((rotated_signals, hflipped_signals)), np.concatenate(
         (rotated_new_labels, hflipped_new_labels))
@@ -148,9 +175,7 @@ def rotate_flip_add_gaussian_noise(signals, labels, standard_deviation=0, theta=
     return signals_result, labels_result
 
 
-def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels, standard_deviation=0, theta=0,
-                                                                increment_percentage=1):
-    signals_result, labels_result = rotate_flip_add_gaussian_noise(signals, labels, standard_deviation, theta,
-                                                                   increment_percentage)
+def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels):
+    signals_result, labels_result = rotate_flip_add_gaussian_noise(signals, labels)
 
     return np.concatenate((signals, signals_result)), np.concatenate((labels, labels_result))
