@@ -16,8 +16,10 @@ def show_loss_curves(history):
     # Show loss curves
     plt.figure()
     plt.title('Training performance')
-    plt.plot(history.epoch, history.history['loss'], label='train loss + error')
-    plt.plot(history.epoch, history.history['val_loss'], label='val_error')
+    plt.plot(history.epoch, history.history['loss'], label='training')
+    plt.plot(history.epoch, history.history['val_loss'], label='validation')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
     plt.legend()
 
 
