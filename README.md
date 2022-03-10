@@ -2,8 +2,6 @@
 
 This is my Master's Degree thesis repository. It's about Signal Modulation Classification using Deep Learning.
 
-I'm still writing the thesis document, it will be available here soon (before march 2022).
-
 # Prerequisites
 
 Follow those steps to get all running.
