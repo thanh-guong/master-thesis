@@ -13,25 +13,22 @@ SIGMA_3 = 0.002
 
 def rotate(signals, labels):
     """
-
-        Function for rotating a portion (proportional to scale_factor) of signals and adding the rotated signals to original
-        signals list.
-
-        Rotated signal matrix B is obtained by multiplication of T transformation matrix with A original signal matrix.
-
-        B = TxA
+        This function creates a list containing three rotated copies of each element in signals. Rotations are done by
+        90°, 180° and 270°.
 
         Args:
-            signals: numpy.array of 2x128 matrix of I/Q signals.
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
             labels: labels for each signal.
 
         Returns:
-            numpy.array of 2x128 matrix of I/Q signals concatenated with a portion (proportional to scale_factor) of signals
-            rotated.
+            numpy.array of 2x128 matrixes each one representing a rotated signal.
+    """
 
-        """
-
-    # T matrix is the multiplication matrix used for doing the transformation
+    # Rotated signal matrix B is obtained by multiplication of T transformation matrix with A original signal matrix.
+    #
+    # B = TxA
+    #
+    # T is defined as shown below.
     #
     # | cos(theta)  -sin(theta) |
     # | sin(theta)   cos(theta) |
@@ -74,12 +71,37 @@ def rotate(signals, labels):
 
 
 def rotate_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing three rotated copies of each element in signals, concatenated with the
+        given signals list. Rotations are done by 90°, 180° and 270°.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing a rotated signal.
+    """
+
     rotated_signals, rotated_labels = rotate(signals, labels)
 
     return np.concatenate((signals, rotated_signals)), np.concatenate((labels, rotated_labels))
 
 
 def flip(signals, labels, direction):
+    """
+        This function creates a list containing a single flipped (horizontally or vertically) copy of each element in
+        signals.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+            direction: 'horizontal' | 'vertical'
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing a flipped signal.
+    """
+
     flipped = []
 
     for signal in signals:
@@ -98,26 +120,83 @@ def flip(signals, labels, direction):
 
 
 def horizontal_flip(signals, labels):
+    """
+        This function creates a list containing a single horizontally flipped copy of each element in signals.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing an horizontally flipped signal.
+    """
+
     return flip(signals, labels, "horizontal")
 
 
 def horizontal_flip_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing a single horizontally flipped copy of each element in signals,
+        concatenated with the given signals list.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing horizontally flipped signals concatenated with given signals.
+    """
+
     hflipped_signals, hflipped_labels = horizontal_flip(signals, labels)
 
     return np.concatenate((signals, hflipped_signals)), np.concatenate((labels, hflipped_labels))
 
 
 def vertical_flip(signals, labels):
+    """
+        This function creates a list containing a single vertically flipped copy of each element in signals.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing an vertically flipped signal.
+    """
+
     return flip(signals, labels, "vertical")
 
 
 def vertical_flip_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing a single vertically flipped copy of each element in signals,
+        concatenated with the given signals list.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing vertically flipped signals concatenated with given signals.
+    """
     vflipped_signals, vflipped_labels = vertical_flip(signals, labels)
 
     return np.concatenate((signals, vflipped_signals)), np.concatenate((labels, vflipped_labels))
 
 
 def horizontal_and_vertical_flip_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing a vertically and an horizontal flipped copy of each element in signals,
+        concatenated with the given signals list.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing flipped signals concatenated with given signals.
+    """
+
     hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels)
     vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels)
 
@@ -126,6 +205,18 @@ def horizontal_and_vertical_flip_and_concatenate_with_signals(signals, labels):
 
 
 def add_gaussian_noise(signals, labels):
+    """
+        This function creates a list containing three noised copies of each element in signals. Noise added is Gaussian,
+        and the standard deviation used for the three copies is 0.0005, 0.001 and 0.002.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing a noised signal.
+    """
+
     disturbed_with_noise_signals = []
     disturbed_labels = []
 
@@ -154,12 +245,37 @@ def add_gaussian_noise(signals, labels):
 
 
 def add_gaussian_noise_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing three noised copies of each element in signals. Noise added is Gaussian,
+        and the standard deviation used for the three copies is 0.0005, 0.001 and 0.002.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing noised signals concatenated with given signals.
+    """
+
     gnoised_signals, gnoised_labels = add_gaussian_noise(signals, labels)
 
     return np.concatenate((signals, gnoised_signals)), np.concatenate((labels, gnoised_labels))
 
 
 def rotate_flip_add_gaussian_noise(signals, labels):
+    """
+        This function creates a list containing three rotated, two flipped (horizontally and vertically) and three
+        noised copies of each element in signals. Rotations are done by 90°, 180° and 270°, noise added is Gaussian and
+        the standard deviation used for the three copies is 0.0005, 0.001 and 0.002.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing rotated, flipped (horizontally and vertically) and noised signals.
+    """
+
     rotated_signals, rotated_new_labels = rotate(signals, labels)
     hflipped_signals, hflipped_new_labels = horizontal_flip(signals, labels)
     vflipped_signals, vflipped_new_labels = vertical_flip(signals, labels)
@@ -176,6 +292,20 @@ def rotate_flip_add_gaussian_noise(signals, labels):
 
 
 def rotate_flip_add_gaussian_noise_and_concatenate_with_signals(signals, labels):
+    """
+        This function creates a list containing three rotated, two flipped (horizontally and vertically) and three
+        noised copies of each element in signals. Rotations are done by 90°, 180° and 270°, noise added is Gaussian and
+        the standard deviation used for the three copies is 0.0005, 0.001 and 0.002.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+            labels: labels for each signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes representing rotated, flipped (horizontally and vertically) and noised signals,
+            concatenated with given signals.
+    """
+
     signals_result, labels_result = rotate_flip_add_gaussian_noise(signals, labels)
 
     return np.concatenate((signals, signals_result)), np.concatenate((labels, labels_result))
