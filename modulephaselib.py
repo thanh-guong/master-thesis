@@ -5,6 +5,16 @@ MODULE_PHASE_SIGNALS_COLUMN_DATAFRAME_NAME = 'MP signals'
 
 
 def single_I_Q_to_module_phase(signal):
+    """
+        This function transforms a single I/Q signal in Module/Phase.
+
+        Args:
+            signal: 2x128 matrix representing the signal.
+
+        Returns:
+            2x128 matrix representing the transformed signal.
+    """
+
     modules = []
     phases = []
 
@@ -24,6 +34,17 @@ def single_I_Q_to_module_phase(signal):
 
 
 def all_I_Q_to_module_phase(signals):
+    """
+        This function creates a list containing the transformed copy of each element in signals. Transformation is done
+        in Module/Phase.
+
+        Args:
+            signals: numpy.array of 2x128 matrixes each one representing a signal.
+
+        Returns:
+            numpy.array of 2x128 matrixes each one representing a transformed signal.
+    """
+
     transformed_signals = []
 
     for signal in signals:
@@ -36,6 +57,16 @@ def all_I_Q_to_module_phase(signals):
 
 
 def transform_and_add_signals_to_dataframe(dataset_df):
+    """
+        This function transforms the signals contained in dataset_df. Transformation is done in Module/Phase.
+
+        Args:
+            dataset_df: pandas dataframe containing the dataset.
+
+        Returns:
+            pandas dataframe with transformation applied.
+    """
+
     # add Module/Phase signals to pandas Dataframe
     signals = datasetlib.signals(dataset_df)
     dataset_df[MODULE_PHASE_SIGNALS_COLUMN_DATAFRAME_NAME] = all_I_Q_to_module_phase(signals)
