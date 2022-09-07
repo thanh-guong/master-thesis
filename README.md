@@ -4,6 +4,10 @@ This is my Master's Degree thesis repository. It's about Signal Modulation Class
 
 Inbound signals are encoded using different kind of modulations, so it's mandatory to know (or predict) the modulation used in order to decode the signal content. AMR (Automatic Modulation Recognition) can be used to predict the modulation of an inbound signal. Deep Learning tecniques can be used for AMR, and that's what I did with my Master Degree thesis.
 
+# Paper: An Effective Convolution Neural Network for Automatic Recognition of Analog and Digital Signal Modulations for Cognitive SDR Applications
+
+I collaborated at writing a Paper (with Luca Pallotta and Gaetano Giunta from Roma Tre University in Rome) which resumes all the work done in this repository. The paper is available at https://ieeexplore.ieee.org/document/9870449.
+
 # Project structure description
 
 The project contains different neural network trainings. Each **directory** contains the trainings for a different **data version**. Inside each directory there are the **.ipynb** files which are the **neural network trainings** for the data version specified by the directory where they are. The schema below describes an example of the directory tree structure used in this project.
