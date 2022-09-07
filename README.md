@@ -89,11 +89,12 @@ You need to install cuDNN Library in your System: [download](https://developer.n
 
 # References & useful material
 
-| Name                                                                                           | Ref                                                                                                                                     |
+| Name                                                                                           | Ref                                                                                                                                      |
 |------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| The paper which resumes the work done in this repository                                       | [link](https://ieeexplore.ieee.org/document/9870449)                                                                                     |
 | Background, history and an introduction to Automatic Modulation Recognition with Deep Learning | [link](https://www.researchgate.net/publication/332241963_A_Robust_Modulation_Classification_Method_Using_Convolutional_Neural_Networks) |
 | Dataset RadioML2016.10a                                                                        | [link](https://pubs.gnuradio.org/index.php/grcon/article/view/11)                                                                        |
-| CNN2 neural network                                                                                           | [link](https://arxiv.org/pdf/1602.04105.pdf)                                                                                             |
+| CNN2 neural network                                                                            | [link](https://arxiv.org/pdf/1602.04105.pdf)                                                                                             |
 | RadioML2018.01a, an extended version of the dataset used in my thesis                          | [link](https://ieeexplore.ieee.org/document/8267032)                                                                                     |
 | Baseline neural network, relabeling and ensamble learning                                      | [link](https://ieeexplore.ieee.org/document/8935775)                                                                                     |
 | Batch normalization                                                                            | [link](https://arxiv.org/abs/1502.03167)                                                                                                 |
