@@ -6,7 +6,7 @@ Inbound signals are encoded using different kind of modulations, so it's mandato
 
 # Paper: An Effective Convolution Neural Network for Automatic Recognition of Analog and Digital Signal Modulations for Cognitive SDR Applications
 
-I collaborated at writing a Paper (with Luca Pallotta and Gaetano Giunta from Roma Tre University in Rome) which resumes all the work done in this repository. The paper is available at https://doi.org/10.1109/IWSDA50346.2022.9870449.
+I collaborated at writing a paper (with Luca Pallotta and Gaetano Giunta from Roma Tre University in Rome) which resumes all the work done in this repository. In that work, architecture shown and explained is called FreeHand, but it's corresponding to the FreeHand v3 implemented in this repository. The paper is available at https://doi.org/10.1109/IWSDA50346.2022.9870449.
 
 # Project structure description
 
