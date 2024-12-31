@@ -81,11 +81,11 @@ I had a problem with CUDA in the beginning, problem/solution couple available [h
 
 ### CUDA Toolkit
 
-You need to install CUDA Toolkit in your System: [download](https://developer.nvidia.com/cuda-toolkit).
+You need to install CUDA Toolkit (works with version 11.2) in your System: [download](https://developer.nvidia.com/cuda-toolkit).
 
 ### cuDNN Library
 
-You need to install cuDNN Library in your System: [download](https://developer.nvidia.com/rdp/cudnn-download) and follow NVDIA [installation guide](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html)
+You need to install cuDNN (works with version 8.1) Library in your System: [download](https://developer.nvidia.com/rdp/cudnn-download) and follow NVDIA [installation guide](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html)
 
 # References & useful material
 
